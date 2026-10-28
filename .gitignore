@@ -1,0 +1,128 @@
+# ====================================================================
+# Digital Image Forensics & Authenticity Analysis - .gitignore
+# ====================================================================
+
+# --------------------------------------------------------------------
+# 1. Environment & Secrets (Never commit credentials / local configs)
+# --------------------------------------------------------------------
+.env
+.env.local
+.env.*.local
+*.env
+!.env.example
+!backend/.env.example
+
+# --------------------------------------------------------------------
+# 2. Large Model Weights & Checkpoints (Exceed GitHub 100MB limit)
+# --------------------------------------------------------------------
+*.pth
+*.pt
+*.bin
+*.ckpt
+*.h5
+*.onnx
+*.safetensors
+*.pkl
+*.joblib
+*.weights
+
+# Model archives & backups
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+
+# Retain directory structure in models/
+!.gitkeep
+!models/**/.gitkeep
+
+# --------------------------------------------------------------------
+# 3. Python Virtual Environments & Packages
+# --------------------------------------------------------------------
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+virtualenv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# --------------------------------------------------------------------
+# 4. Python Bytecode, Caches & Test Artifacts
+# --------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# --------------------------------------------------------------------
+# 5. Frontend & Node.js Dependencies & Production Builds
+# --------------------------------------------------------------------
+node_modules/
+dist/
+dist-ssr/
+build/
+.next/
+.out/
+.turbo/
+*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# --------------------------------------------------------------------
+# 6. Generated Evidence, Temporary Uploads & Analysis Reports
+# --------------------------------------------------------------------
+*.pdf
+temp/
+tmp/
+uploads/
+scratch/
+evidence_cache/
+output/
+
+# --------------------------------------------------------------------
+# 7. Operating System & Editor Artifacts
+# --------------------------------------------------------------------
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# IDEs & Editors
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.bak
