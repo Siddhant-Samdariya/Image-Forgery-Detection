@@ -1,0 +1,39 @@
+AI_detect/
+│
+├── requirements.txt               
+│
+├── config.py                      # paths and constants (CLIP model, N_TRAIN, SD model)
+├── common.py                      # CLIP loader, feature extraction, augmentation, metrics
+├── 01_prepare_train_real.py       # downloads COCO train2017 images + captions
+├── 02_generate_train_fake.py      # generates paired fakes with Stable Diffusion
+├── 03_train_clip_svm.py           # trains "plain" and "aug" (+) CLIP+SVM models
+├── 04_evaluate_clip_svm.py        # evaluates on the test set, writes results/
+│
+├── baseline_hf/                   # Hugging Face baseline + test-set builders
+│   ├── download_coco.py           # 100 random COCO val2017 reals -> test_images/real/
+│   ├── download_synthbuster.py    # 12 images x 9 generators -> test_images/fake/
+│   └── test_detector.py           # evaluates dima806/ai_vs_real_image_detection
+│
+├── data/                          # NOT in git (large). Recreate as described below.
+│   ├── train/
+│   │   ├── real/                  # created by script 01 (coco_train_<id>.jpg)
+│   │   ├── fake/                  # created by script 02 (fake_coco_train_<id>.png)
+│   │   └── captions.json          # created by script 01 (tracked in git)
+│   └── test_images/               # you must create this (see "Test set" below)
+│       ├── real/                  # COCO val2017 photos (prefix coco_)
+│       ├── fake/                  # Synthbuster images (prefix sb_<generator>_)
+│       ├── real_resized/          # crop + 200x200 + JPEG 65-100 versions
+│       └── fake_resized/
+│
+├── models/                        # created by script 03
+│   ├── clip_svm_plain.joblib
+│   └── clip_svm_aug.joblib
+│
+├── cache/                         # created automatically (cached CLIP features, .npz)
+│
+└── results/                       # created by script 04
+    ├── clip_summary.csv
+    ├── clip_per_generator.csv
+    ├── clip_per_image.csv
+    └── clip_vs_hf.png
+

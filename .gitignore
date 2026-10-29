@@ -179,3 +179,12 @@ $RECYCLE.BIN/
 *.fits
 *.fit
 *.webm
+
+# --- AI_detect: data (large, re-creatable by the scripts) ---
+backend/AI_detect/data/train/real/
+backend/AI_detect/data/train/fake/
+backend/AI_detect/data/test_images/
+
+# --- AI_detect: generated artifacts ---
+backend/AI_detect/cache/
+backend/AI_detect/results/*.png

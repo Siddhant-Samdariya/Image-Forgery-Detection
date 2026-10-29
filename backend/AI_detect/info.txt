@@ -1,0 +1,34 @@
+
+HOW TO REBUILD AFTER CLONING
+----------------------------
+0. Environment (Python 3.11):
+     pip install torch torchvision open_clip_torch diffusers transformers \
+                 accelerate scikit-learn matplotlib pillow joblib remotezip
+   Note: transformers 5.x needs huggingface-hub>=1.5.0,<2.0.
+   Run everything from inside AI_detect/.
+
+1. Test set (data/test_images/):
+     mkdir -p data/test_images
+     Run baseline_hf/download_coco.py and baseline_hf/download_synthbuster.py,
+     then baseline_hf/test_detector.py once. It builds real_resized/ and
+     fake_resized/. Move or copy the resulting test_images/ folder into
+     data/test_images/.
+   Test reals: COCO val2017. Test fakes: Synthbuster (Zenodo record 10066460).
+
+2. Training data:
+     python 01_prepare_train_real.py     # real images + captions.json
+     python 02_generate_train_fake.py    # slow on a laptop; resumable
+   (Fakes can instead be generated on a GPU such as Kaggle and copied into
+    data/train/fake/ using the same names: fake_<real image stem>.png)
+
+3. Train and evaluate:
+     python 03_train_clip_svm.py
+     python 04_evaluate_clip_svm.py
+
+NOTES
+-----
+- config.py creates data/train/real, data/train/fake, models/, cache/ and
+  results/ automatically. Only data/test_images/ must be made by hand.
+- CLIP weights are not stored in the repo. open_clip downloads them (~1.7 GB)
+  into its own cache on first run.
+- Training reals (COCO train2017) and test reals (COCO val2017) are disjoint.

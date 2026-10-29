@@ -1,0 +1,39 @@
+"""Download N random COCO train2017 images + one caption each.
+Train2017 and val2017 are disjoint, so nothing overlaps with your test set."""
+import json
+import zipfile
+import numpy as np
+from remotezip import RemoteZip
+
+import config
+
+# http:// on purpose: COCO's https certificate is mismatched
+ANN_URL = "http://images.cocodataset.org/annotations/annotations_trainval2017.zip"
+IMG_URL = "http://images.cocodataset.org/zips/train2017.zip"
+
+rng = np.random.default_rng(config.SEED)
+
+print("Fetching captions...")
+with RemoteZip(ANN_URL) as z:
+    ann = json.loads(z.read("annotations/captions_train2017.json"))
+
+caps = {}
+for a in ann["annotations"]:
+    caps.setdefault(a["image_id"], a["caption"].strip())
+ids = sorted(caps)
+chosen = rng.choice(ids, size=config.N_TRAIN, replace=False)
+
+out_caps = {}
+print(f"Downloading {len(chosen)} images...")
+with RemoteZip(IMG_URL) as z:
+    for k, img_id in enumerate(chosen, 1):
+        member = f"train2017/{int(img_id):012d}.jpg"
+        name = f"coco_train_{int(img_id):012d}.jpg"
+        dest = config.TRAIN_REAL / name
+        if not dest.exists():
+            dest.write_bytes(z.read(member))
+        out_caps[name] = caps[int(img_id)]
+        print(f"  {k}/{len(chosen)}", end="\r")
+
+config.CAPTIONS.write_text(json.dumps(out_caps, indent=1))
+print(f"\nDone. {len(out_caps)} images + captions saved.")
