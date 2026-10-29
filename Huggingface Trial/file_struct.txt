@@ -1,0 +1,7 @@
+Huggingface Trial/
+  test_detector.py
+  test_images/
+    real/        <- real photos (your own phone photos are ideal)
+    fake/        <- AI images from recent generators
+    fake_resized/ <- the same fake images, screenshotted or saved as low-quality JPEG
+    real_resized/ <- the same real photos, screenshotted or compressed
